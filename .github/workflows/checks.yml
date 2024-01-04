@@ -1,0 +1,35 @@
+name: Checks and Tests
+
+on:
+  pull_request:
+    branches: [ master ]
+
+env:
+  EXECUTION_ENV: 'CI'
+  PYTHON_VERSION: '3.10'
+  POETRY_VERSION: '1.7.*'
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Python with dependencies
+        uses: ./.github/actions/setup_python
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          poetry-version: ${{ env.POETRY_VERSION }}
+
+      - name: Static checks
+        run: make checks
+
+#      - name: Unit tests
+#        run: make pytest_ci
+#
+#      - name: Upload test results
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: pytest-results-${{ github.sha }}
+#          path: junit/test-results.xml
+#        if: ${{ always() }}

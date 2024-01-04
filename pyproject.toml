@@ -1,0 +1,108 @@
+# BLACK
+[tool.black]
+target-version = ["py310"]
+line-length = 120
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  src/notebooks
+  #| src/notebooks
+)/
+'''
+
+# ISORT
+[tool.isort]
+py_version = 310
+line_length = 120
+profile = "black"
+atomic = true
+lines_after_imports = 2
+combine_as_imports = true
+force_alphabetical_sort_within_sections = true
+treat_comments_as_code = ["# COMMAND ----------", "# DBTITLE 1"]
+
+# MYPY
+[tool.mypy]
+python_version = 3.10
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+follow_imports = "silent"
+namespace_packages = false
+
+# PYLINT
+[tool.pylint.main]
+py-version = 3.10
+load-plugins = [
+    "pylint.extensions.bad_builtin",
+    "pylint.extensions.check_elif",
+    "pylint.extensions.comparison_placement",
+    "pylint.extensions.dict_init_mutate",
+    "pylint.extensions.docstyle",
+    "pylint.extensions.empty_comment",
+    "pylint.extensions.for_any_all",
+    "pylint.extensions.mccabe",
+    "pylint.extensions.no_self_use",
+    "pylint.extensions.private_import",
+    "pylint.extensions.redefined_loop_name",
+    "pylint.extensions.redefined_variable_type",
+    "pylint.extensions.typing",
+]
+
+[tool.pylint.logging]
+logging-format-style = "new"
+
+[tool.pylint.format]
+max-line-length = 120
+expected-line-ending-format = "LF"
+
+[tool.pylint.messages_control]
+disable = """
+    docstring-first-line-empty,
+    fixme,
+    import-outside-toplevel,
+    missing-class-docstring,
+    missing-module-docstring,
+    no-name-in-module,
+    too-few-public-methods,
+"""
+
+# PYTEST
+[tool.pytest.ini_options]
+pythonpath = ["."]
+spark_options = ["spark.sql.session.timeZone: UTC"]
+
+# POETRY
+[tool.poetry]
+name = "databricks_pipelines"
+version = "0.0.1"
+description = "Some description"
+readme = "README.md"
+authors = ["alex7c4"]
+packages = [
+    {include = "src/lib", format = ["sdist", "wheel"]},
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# VERSIONS
+[tool.poetry.dependencies]
+python = "3.10.*"  # Python 3.10 is used for Databricks runtime 14.2 (see Databricks Runtime release notes)
+databricks-sdk = "*"
+python-dotenv = "*"
+
+[tool.poetry.group.dev.dependencies]
+pyspark = "3.5.*"
+delta-spark = "3.0.*"  # Spark compatibility: https://docs.delta.io/latest/releases.html#compatibility-with-apache-spark
+# linters
+black = "*"
+isort = "*"
+mypy = "*"
+pylint = "*"
+# testing
+pytest = "*"
+pytest-spark = "*"
+# other
+colorama = "*"
