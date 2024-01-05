@@ -41,6 +41,7 @@ def get_dbutils():
 
 
 def widget_text(name: str, default: str = "") -> str:
+    """Get widget text value"""
     widgets = get_dbutils().widgets
     widgets.text(name=name, defaultValue=default)
     value: str = widgets.get(name)

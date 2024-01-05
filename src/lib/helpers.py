@@ -12,7 +12,7 @@ def download_file(file_url: str, save_path: Path) -> Path:
     """
     save_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with requests.get(file_url, stream=True) as r:
+    with requests.get(file_url, stream=True, timeout=10) as r:
         r.raise_for_status()
         with save_path.open(mode="wb") as fileo:
             for chunk in r.iter_content(chunk_size=1024 * 1024 * 1):  # 1mb

@@ -120,7 +120,8 @@ new_data_df = (
         comment("ucr_code", "Highest Offense Code"),
         comment(
             "category_description",
-            "Description for the most serious crimes identified by the FBI as part of its Uniform Crime Reporting program",
+            "Description for the most serious crimes identified by the FBI as part of its Uniform Crime Reporting "
+            "program",
         ),
         comment("family_violence", "Incident involves family violence?"),
         comment("address", "Incident location"),

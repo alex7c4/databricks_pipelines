@@ -1,9 +1,8 @@
 import logging
-from dataclasses import dataclass, field, fields
+from dataclasses import fields
 
 from databricks.sdk import WorkspaceClient
-from databricks.sdk.service import compute, iam, jobs
-from databricks.sdk.service.jobs import Job
+from databricks.sdk.service import iam, jobs
 
 
 LOGGER = logging.getLogger(__name__)

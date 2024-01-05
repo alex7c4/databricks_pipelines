@@ -23,6 +23,7 @@ NOTEBOOK_PATH = "/Users/prived007@gmail.com/proj_a/dummy_notebook"
 
 
 def main():
+    """Main entry"""
     workspace_client = get_databricks_client()
 
     tasks = []

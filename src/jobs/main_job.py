@@ -1,7 +1,7 @@
 import logging
 import random
 import string
-from typing import Iterable
+from collections.abc import Iterable
 
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import jobs
@@ -47,6 +47,7 @@ def chain_tasks(tasks: list[jobs.Task]):
 
 
 def main():
+    """Main job"""
     workspace_client = get_databricks_client()
 
     proj_a_tasks = make_tasks(workspace_client, PROJ_A_JOBS)

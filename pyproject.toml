@@ -23,16 +23,18 @@ treat_comments_as_code = ["# COMMAND ----------", "# DBTITLE 1"]
 
 # MYPY
 [tool.mypy]
-python_version = 3.10
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 ignore_missing_imports = true
 follow_imports = "silent"
 namespace_packages = false
+disable_error_code = ["import-untyped"]
+exclude = ["src/lib/job.py"]
 
 # PYLINT
 [tool.pylint.main]
-py-version = 3.10
+py-version = "3.10"
 load-plugins = [
     "pylint.extensions.bad_builtin",
     "pylint.extensions.check_elif",
@@ -65,6 +67,9 @@ disable = """
     missing-module-docstring,
     no-name-in-module,
     too-few-public-methods,
+    logging-fstring-interpolation,
+    duplicate-code,
+    too-many-instance-attributes,
 """
 
 # PYTEST

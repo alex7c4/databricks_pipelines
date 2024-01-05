@@ -12,9 +12,9 @@ LOGGER = logging.getLogger(__name__)
 
 
 PARAMS = (
-    JobParams(source_table="a1", target_table="a2"),
-    JobParams(source_table="b1", target_table="b2"),
-    JobParams(source_table="c1", target_table="c2"),
+    JobParams(source_table="e1", target_table="e2"),
+    JobParams(source_table="f1", target_table="f2"),
+    JobParams(source_table="j1", target_table="j2"),
 )
 
 
@@ -23,6 +23,7 @@ NOTEBOOK_PATH = "/Users/prived007@gmail.com/proj_a/dummy_notebook"
 
 
 def main():
+    """Main entry"""
     workspace_client = get_databricks_client()
 
     tasks = []

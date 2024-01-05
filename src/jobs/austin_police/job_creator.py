@@ -21,6 +21,11 @@ CRIMES_NB_BRONZE = Path("/master/1_bronze/read_austin_pd_crimes")
 
 
 def create_task(notebook_path: Path) -> jobs.Task:
+    """Create task.
+
+    :param notebook_path: Path to the existing notebook inside Databricks.
+    :return: Task
+    """
     return jobs.Task(
         notebook_task=jobs.NotebookTask(
             notebook_path=notebook_path.as_posix(),
@@ -35,6 +40,7 @@ def create_task(notebook_path: Path) -> jobs.Task:
 
 
 def main():
+    """Main entry"""
     workspace_client = get_databricks_client()
 
     police_codes_raw_task = create_task(POLICE_CODES_NB_RAW)
