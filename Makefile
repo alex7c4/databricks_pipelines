@@ -42,7 +42,8 @@ notebooks_upload:
 	poetry run python3 src/scripts/upload_notebooks.py
 
 jobs_create:
-	find ./src/jobs -type f -name "*.py" ! -name "__init__.*" -exec echo {} \; -exec poetry run python3 {} \; -exec echo \;
+	# find ./src/jobs -type f -name "*.py" ! -name "__init__.*" -exec echo {} \; -exec poetry run python3 {} \; -exec echo \;
+	find ./src/jobs -type f -name "*.py" ! -name "__init__.*" -print0 | xargs --null -n1 poetry run python3
 
 clean:
 	rm -rf ./.*_cache ./dist ./.python-version
