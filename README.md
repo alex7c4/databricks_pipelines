@@ -1,6 +1,6 @@
 [![Check and Upload to Databricks](https://github.com/alex7c4/databricks_pipelines/actions/workflows/deploy.yml/badge.svg?branch=master)](https://github.com/alex7c4/databricks_pipelines/actions/workflows/deploy.yml)
 
-Training project to make Prefect managed Databricks pipelines.
+Training project to make Databricks pipelines.
 
 CI _(GitHub Actions)_ will run checks, tests and deploy the notebooks to the Databricks server and Prefect Flows to a Prefect Cloud.
 
