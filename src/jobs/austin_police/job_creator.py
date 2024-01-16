@@ -26,6 +26,7 @@ def create_task(notebook_path: Path, **kwargs) -> jobs.Task:
     """Create task.
 
     :param notebook_path: Path to the existing notebook inside Databricks.
+    :param kwargs: Params to pass to the 'jobs.Task'
     :return: Task
     """
     return jobs.Task(
@@ -45,11 +46,13 @@ def create_task(notebook_path: Path, **kwargs) -> jobs.Task:
 def main():
     """Main entry"""
     workspace_client = get_databricks_client()
-
+    # raw
     police_codes_raw_task = create_task(POLICE_CODES_NB_RAW)
+    crimes_raw_task = create_task(CRIMES_NB_RAW, max_retries=1, min_retry_interval_millis=60_000)
+    # bronze
     police_codes_bronze_task = create_task(POLICE_CODES_NB_BRONZE)
-    crimes_raw_task = create_task(CRIMES_NB_RAW, max_retries=1)
     crimes_bronze_task = create_task(CRIMES_NB_BRONZE)
+    # silver
     enrich_silver_task = create_task(ENRICH_NB_SILVER)
 
     police_codes_bronze_task.depends_on = [jobs.TaskDependency(task_key=police_codes_raw_task.task_key)]
