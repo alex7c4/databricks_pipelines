@@ -13,13 +13,13 @@ LOGGER = logging.getLogger(__name__)
 JOB_NAME = "Austin Police Department crimes"
 
 # raw
-POLICE_CODES_NB_RAW = Path("/master/raw/get_raw_austin_pd_codes")
-CRIMES_NB_RAW = Path("/master/raw/get_raw_austin_pd_crimes")
+POLICE_CODES_NB_RAW = Path("/main/raw/get_raw_austin_pd_codes")
+CRIMES_NB_RAW = Path("/main/raw/get_raw_austin_pd_crimes")
 # bronze
-POLICE_CODES_NB_BRONZE = Path("/master/bronze/read_austin_pd_codes")
-CRIMES_NB_BRONZE = Path("/master/bronze/read_austin_pd_crimes")
+POLICE_CODES_NB_BRONZE = Path("/main/bronze/read_austin_pd_codes")
+CRIMES_NB_BRONZE = Path("/main/bronze/read_austin_pd_crimes")
 # silver
-ENRICH_NB_SILVER = Path("/master/silver/enrich_pd_crimes")
+ENRICH_NB_SILVER = Path("/main/silver/enrich_pd_crimes")
 
 
 def create_task(notebook_path: Path) -> jobs.Task:
