@@ -7,6 +7,27 @@ CI _(GitHub Actions)_ will run checks, tests and deploy notebooks and jobs to th
 > [!NOTE]
 > This project is still in WIP
 
+### Databricks Jobs
+Here are approximate Databricks Jobs dependencies:
+
+```mermaid
+flowchart LR
+    classDef raw fill:#949494
+    classDef bronze fill:#CD7F32
+    classDef silver fill:#e0e0e0
+
+    r1(Raw Job 1):::raw
+    r2(Raw Job 2):::raw
+    b1(Bronze Job 1):::bronze
+    b2(Bronze Job 2):::bronze
+    s1(Silver Job):::silver
+
+    r1 --> b1
+    r2 --> b2
+    b1 & b2 --> s1
+
+```
+
 ---
 
 ### Setup environment
