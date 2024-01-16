@@ -66,6 +66,7 @@ def main():
             police_codes_bronze_task,
             crimes_raw_task,
             crimes_bronze_task,
+            enrich_silver_task,
         ],
         max_concurrent_runs=1,
         timeout_seconds=0,
