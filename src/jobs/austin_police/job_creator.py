@@ -12,12 +12,14 @@ LOGGER = logging.getLogger(__name__)
 
 JOB_NAME = "Austin Police Department crimes"
 
-# raw level
-POLICE_CODES_NB_RAW = Path("/master/0_raw/get_raw_austin_pd_codes")
-CRIMES_NB_RAW = Path("/master/0_raw/get_raw_austin_pd_crimes")
-# bronze level
-POLICE_CODES_NB_BRONZE = Path("/master/1_bronze/read_austin_pd_codes")
-CRIMES_NB_BRONZE = Path("/master/1_bronze/read_austin_pd_crimes")
+# raw
+POLICE_CODES_NB_RAW = Path("/master/raw/get_raw_austin_pd_codes")
+CRIMES_NB_RAW = Path("/master/raw/get_raw_austin_pd_crimes")
+# bronze
+POLICE_CODES_NB_BRONZE = Path("/master/bronze/read_austin_pd_codes")
+CRIMES_NB_BRONZE = Path("/master/bronze/read_austin_pd_crimes")
+# silver
+ENRICH_NB_SILVER = Path("/master/silver/enrich_pd_crimes")
 
 
 def create_task(notebook_path: Path) -> jobs.Task:
@@ -47,9 +49,15 @@ def main():
     police_codes_bronze_task = create_task(POLICE_CODES_NB_BRONZE)
     crimes_raw_task = create_task(CRIMES_NB_RAW)
     crimes_bronze_task = create_task(CRIMES_NB_BRONZE)
+    enrich_silver_task = create_task(ENRICH_NB_SILVER)
 
     police_codes_bronze_task.depends_on = [jobs.TaskDependency(task_key=police_codes_raw_task.task_key)]
     crimes_bronze_task.depends_on = [jobs.TaskDependency(task_key=crimes_raw_task.task_key)]
+
+    enrich_silver_task.depends_on = [
+        jobs.TaskDependency(task_key=police_codes_bronze_task.task_key),
+        jobs.TaskDependency(task_key=crimes_bronze_task.task_key),
+    ]
 
     job = jobs.JobSettings(
         name=JOB_NAME,
