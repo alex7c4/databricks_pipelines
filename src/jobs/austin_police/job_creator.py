@@ -22,7 +22,7 @@ CRIMES_NB_BRONZE = Path("/main/bronze/read_austin_pd_crimes")
 ENRICH_NB_SILVER = Path("/main/silver/enrich_pd_crimes")
 
 
-def create_task(notebook_path: Path) -> jobs.Task:
+def create_task(notebook_path: Path, **kwargs) -> jobs.Task:
     """Create task.
 
     :param notebook_path: Path to the existing notebook inside Databricks.
@@ -38,6 +38,7 @@ def create_task(notebook_path: Path) -> jobs.Task:
         timeout_seconds=0,
         new_cluster=BaseCluster(),
         libraries=[BaseLib()],
+        **kwargs,
     )
 
 
@@ -47,7 +48,7 @@ def main():
 
     police_codes_raw_task = create_task(POLICE_CODES_NB_RAW)
     police_codes_bronze_task = create_task(POLICE_CODES_NB_BRONZE)
-    crimes_raw_task = create_task(CRIMES_NB_RAW)
+    crimes_raw_task = create_task(CRIMES_NB_RAW, max_retries=1)
     crimes_bronze_task = create_task(CRIMES_NB_BRONZE)
     enrich_silver_task = create_task(ENRICH_NB_SILVER)
 
