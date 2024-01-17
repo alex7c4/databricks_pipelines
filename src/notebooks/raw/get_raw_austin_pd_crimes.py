@@ -30,7 +30,7 @@ def run():
         params_str = urllib.parse.urlencode(params, safe="$")
 
         # get response
-        response = requests.get(API_URL, params=params_str, timeout=60*2)
+        response = requests.get(API_URL, params=params_str, timeout=60*3)
         response.raise_for_status()
         LOGGER.info(f"{counter:02d}) URL: {response.url}")
 

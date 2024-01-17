@@ -25,7 +25,6 @@ flowchart LR
     r1 --> b1
     r2 --> b2
     b1 & b2 --> s1
-
 ```
 
 ---
