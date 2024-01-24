@@ -8,9 +8,6 @@ from databricks.sdk.service import jobs
 from src.lib.clusters import BaseCluster, BaseLib
 from src.lib.dbricks import get_databricks_client
 
-from src.lib.clusters import BaseCluster, BaseLib
-from src.lib.dbricks import get_databricks_client
-
 
 LOGGER = logging.getLogger(__name__)
 
