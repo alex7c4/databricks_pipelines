@@ -3,14 +3,11 @@ from pathlib import Path
 
 from databricks.sdk.service import jobs
 
-from src.lib.clusters import BaseCluster, BaseLib
-from src.lib.dbricks import get_databricks_client
-from src.lib.job import create_or_update_job
+from src.lib.job import BaseDatabricksJob
 
 
 LOGGER = logging.getLogger(__name__)
 
-JOB_NAME = "Austin Police Department crimes"
 
 # raw
 POLICE_CODES_NB_RAW = Path("/main/raw/get_raw_austin_pd_codes")
@@ -22,63 +19,47 @@ CRIMES_NB_BRONZE = Path("/main/bronze/read_austin_pd_crimes")
 ENRICH_NB_SILVER = Path("/main/silver/enrich_pd_crimes")
 
 
-def create_task(notebook_path: Path, **kwargs) -> jobs.Task:
-    """Create task.
+class JobCreator(BaseDatabricksJob):
+    JOB_NAME = "Austin Police Department crimes"
 
-    :param notebook_path: Path to the existing notebook inside Databricks.
-    :param kwargs: Params to pass to the 'jobs.Task'
-    :return: Task
-    """
-    return jobs.Task(
-        notebook_task=jobs.NotebookTask(
-            notebook_path=notebook_path.as_posix(),
-            source=jobs.Source.WORKSPACE,
-        ),
-        task_key=notebook_path.name,
-        run_if=jobs.RunIf.ALL_SUCCESS,
-        timeout_seconds=0,
-        new_cluster=BaseCluster(),
-        libraries=[BaseLib()],
-        **kwargs,
-    )
+    def __init__(self):
+        super().__init__()
+        # Create tasks
+        # raw
+        police_codes_raw_task = self.create_base_task(POLICE_CODES_NB_RAW)
+        crimes_raw_task = self.create_base_task(CRIMES_NB_RAW, max_retries=1, min_retry_interval_millis=60_000)
+        # bronze
+        police_codes_bronze_task = self.create_base_task(POLICE_CODES_NB_BRONZE)
+        crimes_bronze_task = self.create_base_task(CRIMES_NB_BRONZE)
+        # silver
+        enrich_silver_task = self.create_base_task(ENRICH_NB_SILVER)
+
+        # Make dependencies
+        police_codes_bronze_task.depends_on = [jobs.TaskDependency(task_key=police_codes_raw_task.task_key)]
+        crimes_bronze_task.depends_on = [jobs.TaskDependency(task_key=crimes_raw_task.task_key)]
+        enrich_silver_task.depends_on = [
+            jobs.TaskDependency(task_key=police_codes_bronze_task.task_key),
+            jobs.TaskDependency(task_key=crimes_bronze_task.task_key),
+        ]
+
+        # Make job
+        self.job = jobs.JobSettings(
+            name=self.JOB_NAME,
+            tasks=[
+                police_codes_raw_task,
+                police_codes_bronze_task,
+                crimes_raw_task,
+                crimes_bronze_task,
+                enrich_silver_task,
+            ],
+            max_concurrent_runs=1,
+            timeout_seconds=0,
+        )
 
 
 def main():
     """Main entry"""
-    workspace_client = get_databricks_client()
-    # raw
-    police_codes_raw_task = create_task(POLICE_CODES_NB_RAW)
-    crimes_raw_task = create_task(CRIMES_NB_RAW, max_retries=1, min_retry_interval_millis=60_000)
-    # bronze
-    police_codes_bronze_task = create_task(POLICE_CODES_NB_BRONZE)
-    crimes_bronze_task = create_task(CRIMES_NB_BRONZE)
-    # silver
-    enrich_silver_task = create_task(ENRICH_NB_SILVER)
-
-    police_codes_bronze_task.depends_on = [jobs.TaskDependency(task_key=police_codes_raw_task.task_key)]
-    crimes_bronze_task.depends_on = [jobs.TaskDependency(task_key=crimes_raw_task.task_key)]
-
-    enrich_silver_task.depends_on = [
-        jobs.TaskDependency(task_key=police_codes_bronze_task.task_key),
-        jobs.TaskDependency(task_key=crimes_bronze_task.task_key),
-    ]
-
-    job = jobs.JobSettings(
-        name=JOB_NAME,
-        tasks=[
-            police_codes_raw_task,
-            police_codes_bronze_task,
-            crimes_raw_task,
-            crimes_bronze_task,
-            enrich_silver_task,
-        ],
-        max_concurrent_runs=1,
-        timeout_seconds=0,
-    )
-
-    # create
-    job_id = create_or_update_job(client=workspace_client, job_settings=job)
-    LOGGER.info(f"JobID: {job_id}")
+    JobCreator().deploy()
 
 
 if __name__ == "__main__":

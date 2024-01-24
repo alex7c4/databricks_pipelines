@@ -1,8 +1,12 @@
 import logging
 from dataclasses import fields
+from pathlib import Path
 
 from databricks.sdk import WorkspaceClient
 from databricks.sdk.service import iam, jobs
+
+from src.lib.clusters import BaseCluster, BaseLib
+from src.lib.dbricks import get_databricks_client
 
 
 LOGGER = logging.getLogger(__name__)
@@ -80,17 +84,39 @@ def create_or_update_job(client: WorkspaceClient, job_settings: jobs.JobSettings
     return job_id
 
 
-def update_job_permissions_for_users(
-    client: WorkspaceClient, job_id: int, permission_level: iam.PermissionLevel = iam.PermissionLevel.CAN_MANAGE
-) -> None:
-    """Update job permissions for group_name="users" for provided Job ID.
+class BaseDatabricksJob:
+    JOB_NAME: str = None
 
-    :param client: Databricks Workspace Client
-    :param job_id: Job ID
-    :param permission_level: Permission for users for a job
-    """
-    LOGGER.info(f"Update job permissions for JobID '{job_id}' for group 'users' to '{permission_level}'")
-    client.jobs.update_permissions(
-        job_id=str(job_id),
-        access_control_list=[iam.AccessControlRequest(group_name="users", permission_level=permission_level)],
-    )
+    def __init__(self):
+        self.workspace_client = get_databricks_client()
+        self.job: jobs.JobSettings = None
+
+    @staticmethod
+    def create_base_task(notebook_path: Path, **kwargs) -> jobs.Task:
+        """Create task.
+
+        :param notebook_path: Path to the existing notebook inside Databricks.
+        :param kwargs: Params to pass to the 'jobs.Task'
+        :return: Task
+        """
+        return jobs.Task(
+            notebook_task=jobs.NotebookTask(
+                notebook_path=notebook_path.as_posix(),
+                source=jobs.Source.WORKSPACE,
+            ),
+            task_key=notebook_path.name,
+            run_if=jobs.RunIf.ALL_SUCCESS,
+            timeout_seconds=0,
+            new_cluster=BaseCluster(),
+            libraries=[BaseLib()],
+            **kwargs,
+        )
+
+    def deploy(self) -> int:
+        """Deploy job to Databricks.
+
+        :return: Job ID of created or updated job
+        """
+        job_id = create_or_update_job(client=self.workspace_client, job_settings=self.job)
+        LOGGER.info(f"Job ID '{job_id}' deployed to Databricks")
+        return job_id
