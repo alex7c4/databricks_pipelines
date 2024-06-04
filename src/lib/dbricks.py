@@ -1,4 +1,5 @@
 """Module with Databricks related helpers"""
+
 from unittest.mock import MagicMock
 
 from databricks.sdk import WorkspaceClient
