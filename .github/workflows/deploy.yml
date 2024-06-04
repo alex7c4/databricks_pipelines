@@ -24,7 +24,7 @@ jobs:
           poetry-version: ${{ env.POETRY_VER }}
 
       - name: Download Databricks CLI
-        uses: databricks/setup-cli@${{ env.DATABRICKS_CLI_VER }}
+        uses: "databricks/setup-cli@${{ env.DATABRICKS_CLI_VER }}"
 
       - name: Static checks
         run: make checks
