@@ -6,49 +6,37 @@ on:
 
 env:
   EXECUTION_ENV: 'CI'
-  PYTHON_VERSION: '3.10'
-  POETRY_VERSION: '1.7.*'
+  PYTHON_VER: '3.11'
+  POETRY_VER: '1.8.*'
+  DATABRICKS_CLI_VER: 'v0.221.0'  # https://github.com/databricks/setup-cli/tags
 
 jobs:
   check-upload:
     environment: CI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install Python with dependencies
         uses: ./.github/actions/setup_python
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          poetry-version: ${{ env.POETRY_VERSION }}
+          python-version: ${{ env.PYTHON_VER }}
+          poetry-version: ${{ env.POETRY_VER }}
+
+      - name: Download Databricks CLI
+        uses: databricks/setup-cli@${{ env.DATABRICKS_CLI_VER }}
 
       - name: Static checks
         run: make checks
 
-#      - name: Unit tests
-#        run: make pytest_ci
-#
-#      - name: Upload test results
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: pytest-results-${{ github.sha }}
-#          path: junit/test-results.xml
-#        if: ${{ always() }}
-
-      - name: Upload notebooks to Databricks
+      - name: Validate Databricks files
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: make notebooks_upload
+        run: databricks bundle validate --output json --target prod
 
-      - name: Build and upload Python lib to Databricks
+      - name: Upload to Databricks
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: make lib_upload
-
-      - name: Create Databricks jobs
-        env:
-          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: make jobs_create
+        run: databricks bundle deploy --target prod

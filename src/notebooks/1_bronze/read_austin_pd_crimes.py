@@ -1,3 +1,9 @@
+# Databricks notebook source
+import os, sys  # isort: skip
+sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
+
+# COMMAND ----------
+
 """
 Read and process raw austin police report JSON files to the bronze table.
 """

@@ -1,11 +1,10 @@
 __pycache__/
 *.py[cod]
 
+.databricks/
 .mypy_cache/
 .pytest_cache/
 .idea/
-dist/
-junit/
 
 .env
 

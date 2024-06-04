@@ -1,0 +1,76 @@
+default_small_cluster: &default_small_cluster
+  new_cluster:
+    spark_version: ${var.default_runtime}
+    spark_conf:
+      spark.master: local[*, 4]
+      spark.databricks.cluster.profile: singleNode
+    azure_attributes:
+      availability: ON_DEMAND_AZURE
+    node_type_id: Standard_DS3_v2
+    driver_node_type_id: Standard_DS3_v2
+    num_workers: 0
+    custom_tags:
+      ResourceClass: SingleNode
+    spark_env_vars:
+      PYSPARK_PYTHON: /databricks/python3/bin/python3
+      BUNDLE_SOURCE_PATH: /Workspace/${workspace.file_path}
+    enable_elastic_disk: true
+    runtime_engine: STANDARD
+
+
+resources:
+  jobs:
+    get_raw_austin_pd_codes:
+      name: raw - Get Austin PD codes
+      tasks:
+        - task_key: get_raw_codes
+          notebook_task:
+            notebook_path: ../../src/notebooks/0_raw/get_raw_austin_pd_codes.py
+          job_cluster_key: job_cluster
+      job_clusters:
+        - job_cluster_key: job_cluster
+          <<: *default_small_cluster
+
+    get_raw_austin_pd_crimes:
+      name: raw - Get Austin PD crimes
+      tasks:
+        - task_key: get_raw_crimes
+          notebook_task:
+            notebook_path: ../../src/notebooks/0_raw/get_raw_austin_pd_crimes.py
+          job_cluster_key: job_cluster
+      job_clusters:
+        - job_cluster_key: job_cluster
+          <<: *default_small_cluster
+
+    read_austin_pd_codes:
+      name: bronze - Read Austin PD codes
+      tasks:
+        - task_key: read_codes
+          notebook_task:
+            notebook_path: ../../src/notebooks/1_bronze/read_austin_pd_codes.py
+          job_cluster_key: job_cluster
+      job_clusters:
+        - job_cluster_key: job_cluster
+          <<: *default_small_cluster
+
+    read_austin_pd_crimes:
+      name: bronze - Read Austin PD crimes
+      tasks:
+        - task_key: read_crimes
+          notebook_task:
+            notebook_path: ../../src/notebooks/1_bronze/read_austin_pd_crimes.py
+          job_cluster_key: job_cluster
+      job_clusters:
+        - job_cluster_key: job_cluster
+          <<: *default_small_cluster
+
+    enrich_pd_crimes:
+      name: silver - Enrich PD crimes
+      tasks:
+        - task_key: enrich_pd_crimes
+          notebook_task:
+            notebook_path: ../../src/notebooks/2_silver/enrich_pd_crimes.py
+          job_cluster_key: job_cluster
+      job_clusters:
+        - job_cluster_key: job_cluster
+          <<: *default_small_cluster

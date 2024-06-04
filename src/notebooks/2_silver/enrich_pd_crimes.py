@@ -1,4 +1,9 @@
 # Databricks notebook source
+import os, sys  # isort: skip
+sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
+
+# COMMAND ----------
+
 # MAGIC %sql select * from bronze.austin_pd_crime_records limit 1000
 
 # COMMAND ----------

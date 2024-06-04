@@ -1,0 +1,30 @@
+# This is a Databricks asset bundle definition for databricks_pipelines.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: databricks_pipelines
+  databricks_cli_version: "0.220.*"
+
+include:
+  - "databricks/variables/*.yml"
+  - "databricks/resources/*.yml"
+
+sync:
+  exclude:
+    - "/*"
+    - "!/src"  # upload only 'src' dir
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      root_path: /Users/${workspace.current_user.userName}/${bundle.name}
+      file_path: ${workspace.root_path}
+
+  prod:
+    # mode: production
+    git:
+      branch: master
+    workspace:
+      root_path: /${bundle.name}
+      file_path: ${workspace.root_path}

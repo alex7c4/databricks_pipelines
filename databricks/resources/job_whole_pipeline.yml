@@ -1,0 +1,31 @@
+resources:
+  jobs:
+    pd_crimes_pipeline:
+      name: PD crimes pipeline
+      tasks:
+        - task_key: get_raw_crimes
+          run_job_task:
+            job_id: ${resources.jobs.get_raw_austin_pd_crimes.id}
+
+        - task_key: get_raw_codes
+          run_job_task:
+            job_id: ${resources.jobs.get_raw_austin_pd_codes.id}
+
+        - task_key: read_crimes
+          depends_on:
+            - task_key: get_raw_crimes
+          run_job_task:
+            job_id: ${resources.jobs.read_austin_pd_crimes.id}
+
+        - task_key: read_codes
+          depends_on:
+            - task_key: get_raw_codes
+          run_job_task:
+            job_id: ${resources.jobs.read_austin_pd_codes.id}
+
+        - task_key: enrich_pd_crimes
+          depends_on:
+            - task_key: read_crimes
+            - task_key: read_codes
+          run_job_task:
+            job_id: ${resources.jobs.enrich_pd_crimes.id}

@@ -1,0 +1,19 @@
+# Override variables for different targets
+targets:
+  dev:
+    variables:
+      env_name: ${workspace.current_user.short_name}
+  prod:
+    variables:
+      env_name: ${bundle.target}
+
+
+# Common variables
+variables:
+  env_name:
+    description: "Environment name"
+    default: ${bundle.target}
+
+  default_runtime:
+    description: "Databricks runtime version"
+    default: 14.3.x-scala2.12  # 14.3 LTS (Apache Spark 3.5.0, Scala 2.12)
