@@ -1,4 +1,5 @@
 """Module with Spark related helpers"""
+
 import pyspark.sql.functions as F
 from pyspark.sql import Column, SparkSession
 

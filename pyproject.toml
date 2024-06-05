@@ -20,6 +20,7 @@ lines_after_imports = 2
 combine_as_imports = true
 force_alphabetical_sort_within_sections = true
 treat_comments_as_code = ["# COMMAND ----------", "# DBTITLE 1"]
+src_paths = ["src"]
 
 # MYPY
 [tool.mypy]
@@ -61,17 +62,18 @@ expected-line-ending-format = "LF"
 
 [tool.pylint.messages_control]
 disable = """
+    wrong-import-position,
+    import-outside-toplevel,
     docstring-first-line-empty,
     fixme,
-    import-outside-toplevel,
-    missing-class-docstring,
-    missing-module-docstring,
     no-name-in-module,
     too-few-public-methods,
     logging-fstring-interpolation,
-    duplicate-code,
     too-many-instance-attributes,
 """
+# missing-class-docstring,
+# missing-module-docstring,
+# duplicate-code,
 
 # PYTEST
 [tool.pytest.ini_options]

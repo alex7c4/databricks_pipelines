@@ -2,11 +2,11 @@
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
   name: databricks_pipelines
-  databricks_cli_version: "0.220.*"
+  databricks_cli_version: "0.221.*"
 
 include:
-  - "databricks/variables/*.yml"
-  - "databricks/resources/*.yml"
+  - "databricks_bundle/variables/*.yml"
+  - "databricks_bundle/resources/*.yml"
 
 sync:
   exclude:

@@ -1,10 +1,11 @@
 # Databricks notebook source
-import os, sys  # isort: skip
+"""Get raw Austin police department codes."""
+
+import os, sys  # isort: skip ; pylint: disable=multiple-imports
 sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
 
 # COMMAND ----------
 
-"""Get raw Austin police department codes."""
 import logging
 
 from src.lib.common_cfg import RAW_SAVE_PATH_DBFS

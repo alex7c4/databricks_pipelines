@@ -1,12 +1,12 @@
 # Databricks notebook source
-import os, sys  # isort: skip
+"""
+Read and process raw austin police report JSON files to the bronze table.
+"""
+import os, sys  # isort: skip ; pylint: disable=multiple-imports
 sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
 
 # COMMAND ----------
 
-"""
-Read and process raw austin police report JSON files to the bronze table.
-"""
 import pyspark.sql.functions as F
 import pyspark.sql.types as T
 
