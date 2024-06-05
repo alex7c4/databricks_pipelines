@@ -2,7 +2,6 @@
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
   name: databricks_pipelines
-  databricks_cli_version: "0.221.*"
 
 include:
   - "databricks_bundle/variables/*.yml"

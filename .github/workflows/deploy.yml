@@ -8,7 +8,6 @@ env:
   EXECUTION_ENV: 'CI'
   PYTHON_VER: '3.11'
   POETRY_VER: '1.8.*'
-  DATABRICKS_CLI_VER: 'v0.221.0'  # https://github.com/databricks/setup-cli/tags
 
 jobs:
   check-upload:
@@ -24,7 +23,7 @@ jobs:
           poetry-version: ${{ env.POETRY_VER }}
 
       - name: Download Databricks CLI
-        uses: "databricks/setup-cli@${{ env.DATABRICKS_CLI_VER }}"
+        uses: databricks/setup-cli@main
 
       - name: Static checks
         run: make checks
