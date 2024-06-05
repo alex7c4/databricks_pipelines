@@ -1,5 +1,5 @@
 # Databricks notebook source
-import os, sys  # isort: skip
+import os, sys  # isort: skip ; pylint: disable=multiple-imports
 sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
 
 # COMMAND ----------

@@ -1,13 +1,14 @@
 # Databricks notebook source
-import os, sys  # isort: skip
-sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
-
-# COMMAND ----------
-
 """
 Get raw Austin police department crime reports as JSONs.
 https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu/about_data
 """
+
+import os, sys  # isort: skip ; pylint: disable=multiple-imports
+sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
+
+# COMMAND ----------
+
 import logging
 import urllib
 
