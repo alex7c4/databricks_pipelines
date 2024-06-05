@@ -21,9 +21,11 @@ targets:
       file_path: ${workspace.root_path}
 
   prod:
-    # mode: production
+    mode: production
     git:
       branch: master
+    run_as:
+      user_name: ${workspace.current_user.userName}
     workspace:
       root_path: /${bundle.name}
       file_path: ${workspace.root_path}
