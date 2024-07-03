@@ -25,14 +25,14 @@ jobs:
       - name: Download Databricks CLI
         uses: databricks/setup-cli@main
 
-      - name: Static checks
-        run: make checks
-
       - name: Validate Databricks files
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
         run: databricks bundle validate --output json --target prod
+
+      - name: Static checks
+        run: make checks
 
       - name: Upload to Databricks
         env:

@@ -21,5 +21,14 @@ jobs:
           python-version: ${{ env.PYTHON_VER }}
           poetry-version: ${{ env.POETRY_VER }}
 
+      - name: Download Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Validate Databricks files
+        env:
+          DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        run: databricks bundle validate --output json --target dev
+
       - name: Static checks
         run: make checks

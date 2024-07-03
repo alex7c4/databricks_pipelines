@@ -17,3 +17,24 @@ variables:
   default_runtime:
     description: "Databricks runtime version"
     default: 14.3.x-scala2.12  # 14.3 LTS (Apache Spark 3.5.0, Scala 2.12)
+
+  default_small_cluster:
+    description: "Default small single-node cluster definition"
+    type: complex
+    default:
+      spark_version: ${var.default_runtime}
+      spark_conf:
+        spark.master: local[*, 4]
+        spark.databricks.cluster.profile: singleNode
+      azure_attributes:
+        availability: ON_DEMAND_AZURE
+      node_type_id: Standard_DS3_v2
+      driver_node_type_id: Standard_DS3_v2
+      num_workers: 0
+      custom_tags:
+        ResourceClass: SingleNode
+      spark_env_vars:
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+        BUNDLE_SOURCE_PATH: /Workspace/${workspace.file_path}
+      enable_elastic_disk: true
+      runtime_engine: STANDARD
