@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - name: Install Poetry
-      run: pip install -U poetry==${{ inputs.poetry-version }}
+      run: pipx install -U poetry==${{ inputs.poetry-version }}
       shell: bash
 
     - name: Install Python ${{ inputs.python-version }}

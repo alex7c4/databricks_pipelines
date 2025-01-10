@@ -1,18 +1,22 @@
 # Override variables for different targets
 targets:
-  dev:
+  personal:
     variables:
-      env_name: ${workspace.current_user.short_name}
+      user_name_prefix: ${workspace.current_user.short_name}_
+
   prod:
     variables:
-      env_name: ${bundle.target}
+      env: prod
 
 
 # Common variables
 variables:
-  env_name:
-    description: "Environment name"
-    default: ${bundle.target}
+  env:
+    description: Env type [dev, qa, prod]
+    default: dev
+  user_name_prefix:
+    default: ""
+    description: User prefix for personal dev deployment
 
   default_runtime:
     description: "Databricks runtime version"

@@ -6,8 +6,8 @@ on:
 
 env:
   EXECUTION_ENV: 'CI'
-  PYTHON_VER: '3.11'
-  POETRY_VER: '1.8.*'
+  PYTHON_VER: '3.12'
+  POETRY_VER: '2.0.*'
 
 jobs:
   checks:

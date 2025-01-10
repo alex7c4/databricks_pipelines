@@ -6,8 +6,8 @@ on:
 
 env:
   EXECUTION_ENV: 'CI'
-  PYTHON_VER: '3.11'
-  POETRY_VER: '1.8.*'
+  PYTHON_VER: '3.12'
+  POETRY_VER: '2.0.*'
 
 jobs:
   check-upload:
@@ -29,7 +29,8 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: databricks bundle validate --output json --target prod
+          DATABRICKS_BUNDLE_ENV: prod
+        run: databricks bundle validate --output json #--target prod
 
       - name: Static checks
         run: make checks

@@ -2,24 +2,30 @@
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
   name: databricks_pipelines
-  databricks_cli_version: ">= 0.222.0"
+  databricks_cli_version: ">= 0.238.0"
 
 include:
-  - "databricks_bundle/variables/*.yml"
-  - "databricks_bundle/resources/*.yml"
+  - resources/*.yml
 
 sync:
   exclude:
     - "/*"
     - "!/src"  # upload only 'src' dir
 
+workspace:
+  root_path: /${bundle.name}
+  file_path: ${workspace.root_path}
+  artifact_path: ${workspace.file_path}/_tech/artifacts
+  state_path: ${workspace.file_path}/_tech/state
+
+
 targets:
-  dev:
-    mode: development
+
+  personal:
     default: true
+    mode: development
     workspace:
-      root_path: /Users/${workspace.current_user.userName}/${bundle.name}
-      file_path: ${workspace.root_path}
+      root_path: ~/${bundle.name}
 
   prod:
     mode: production
@@ -27,6 +33,3 @@ targets:
       branch: master
     run_as:
       user_name: ${workspace.current_user.userName}
-    workspace:
-      root_path: /${bundle.name}
-      file_path: ${workspace.root_path}
