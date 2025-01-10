@@ -29,7 +29,7 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          DATABRICKS_BUNDLE_ENV: prod
+          DATABRICKS_BUNDLE_TARGET: prod
         run: databricks bundle validate --output json #--target prod
 
       - name: Static checks
@@ -39,5 +39,5 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-          DATABRICKS_BUNDLE_ENV: prod
+          DATABRICKS_BUNDLE_TARGET: prod
         run: databricks bundle deploy
