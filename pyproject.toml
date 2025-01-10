@@ -87,7 +87,7 @@ name = "databricks_pipelines"
 
 # VERSIONS
 [tool.poetry.dependencies]
-python = "3.11.*"  # Python 3.10 is used for Databricks runtime 14.2 (see Databricks Runtime release notes)
+python = "3.12.*"  # Python 3.12 is used for Databricks runtime 16.1 (see Databricks Runtime release notes)
 databricks-sdk = "*"
 python-dotenv = "*"
 

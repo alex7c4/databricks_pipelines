@@ -1,8 +1,8 @@
 env:
 	# brew install pyenv
-	pip install -U poetry=="1.8.*"
-	pyenv install --skip-existing 3.11
-	poetry env use $(shell pyenv local 3.11 && pyenv which python3) && poetry install --no-interaction
+	pip install -U poetry=="2.0.*"
+	pyenv install --skip-existing 3.12
+	poetry env use $(shell pyenv local 3.12 && pyenv which python3) && poetry install --no-interaction
 	poetry run pip install --upgrade pip
 
 env_rm:
