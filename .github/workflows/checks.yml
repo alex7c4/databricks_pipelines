@@ -28,7 +28,7 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        run: databricks bundle validate --output json --target dev
+        run: databricks bundle validate --output json
 
       - name: Static checks
         run: make checks
