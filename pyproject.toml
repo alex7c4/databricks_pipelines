@@ -2,7 +2,13 @@
 [tool.black]
 target-version = ["py312"]
 line-length = 120
-
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  src/notebooks
+  #| src/notebooks
+)/
+'''
 
 # ISORT
 [tool.isort]
