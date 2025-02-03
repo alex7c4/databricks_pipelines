@@ -1,7 +1,6 @@
 # Databricks notebook source
 """Get raw Austin police department codes."""
-
-import os, sys  # isort: skip ; pylint: disable=multiple-imports
+import os, sys  # isort: skip ; # noqa
 sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
 
 # COMMAND ----------

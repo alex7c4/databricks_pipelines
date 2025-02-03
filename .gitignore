@@ -1,9 +1,8 @@
 __pycache__/
 *.py[cod]
+*_cache/
 
 .databricks/
-.mypy_cache/
-.pytest_cache/
 .idea/
 .vscode/
 

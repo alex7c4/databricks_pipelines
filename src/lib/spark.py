@@ -14,7 +14,7 @@ def comment(col_name: str, info: str) -> Column:
     return F.col(col_name).alias(col_name, metadata={"comment": info})
 
 
-def enable_optimized_write():
+def enable_optimized_write() -> None:
     """Add Auto compaction and Optimized writes.
     https://docs.databricks.com/en/delta/tune-file-size.html#auto-compaction-for-delta-lake-on-databricks
     """

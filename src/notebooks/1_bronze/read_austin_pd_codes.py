@@ -2,7 +2,7 @@
 """
 Read and process raw austin police report JSON files to the bronze table.
 """
-import os, sys  # isort: skip ; pylint: disable=multiple-imports
+import os, sys  # isort: skip # noqa
 sys.path.append(os.environ.get("BUNDLE_SOURCE_PATH", "."))
 
 # COMMAND ----------
