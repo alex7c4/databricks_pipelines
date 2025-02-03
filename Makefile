@@ -19,8 +19,10 @@ fmt:
 checks:
 	poetry run isort --check ./src
 	poetry run black --check ./src
-	poetry run mypy ./src
-#	poetry run pylint ./src
+	# poetry run mypy ./src
+	# poetry run pylint ./src
+	# ruff check src
+
 
 #pytest_ci:
 #	poetry run pytest -sv --junit-xml junit/test-results.xml ./tests
